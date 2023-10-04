@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+mongoose.set('strictQuery', false);
 const orderSchema = new mongoose.Schema(
   {
     products: [
