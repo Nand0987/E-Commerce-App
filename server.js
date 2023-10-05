@@ -7,10 +7,24 @@ import authRoutes from "./routes/authRoute.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import cors from "cors";
-import path from "path"
-import { fileURLToPath } from "url";
-const __filename=fileURLToPath(import.meta.url)
-const __dirname=path.dirname(__filename)
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename); 
+
+//rest object
+const app = express();    
+
+// Serve static files from the "build" directory`
+
+const buildPath = join(__dirname, '/client/build');
+console.log(buildPath);
+app.use(express.static(buildPath));
+
+app.get('*', (req, res) => {
+  res.sendFile(join(buildPath, '/index.html'));
+});
 
 //configure env
 dotenv.config();
@@ -18,15 +32,7 @@ dotenv.config();
 //databse config
 connectDB();
 
-//rest object
-const app = express();
 
-//middleware
-app.use(express.static(path.join(__dirname,'./client/build/')))
-
-app.use('*',function(req,res){
-  res.sendFile(path.join(__dirname,'./client/build/index.html'))
-})
 
 //middelwares
 app.use(cors());
